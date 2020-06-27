@@ -12,7 +12,7 @@ repositories {
     jcenter()
 }
 
-def compileAvroVersion = "1.9.2"
+def compileAvroVersion = "1.10.0"
 def codenarcVersion = "1.5"
 def codenarcGroovyVersion = "2.5.10" // Newer version than included in 1.5 required for Java 14 support
 
@@ -31,7 +31,13 @@ task createClasspathManifest {
 
 dependencies {
     implementation localGroovy()
-    implementation "org.apache.avro:avro-compiler:${compileAvroVersion}"
+    implementation files('avroJar/avro-1.10.0.jar')
+    implementation files('avroJar/avro-compiler-1.10.0.jar')
+    implementation files('avroJar/avro-ipc-1.10.0.jar')
+    implementation "org.apache.velocity:velocity-engine-core:2.2"
+    implementation "com.fasterxml.jackson.core:jackson-core:2.11.0"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.11.0"
+    //implementation "org.apache.avro:avro-compiler:${compileAvroVersion}"
     testImplementation "org.spockframework:spock-core:1.3-groovy-2.5"
     testImplementation gradleTestKit()
     testImplementation "uk.co.datumedge:hamcrest-json:0.2"
@@ -205,7 +211,7 @@ tasks.create("testRecentVersionCompatibility") {
 // Java 8+ is also required by Gradle 5.x
 sourceCompatibility = 8
 
-def avroVersions = ["1.9.0", "1.9.1", "1.9.2"]
+def avroVersions = ["1.10.0"]
 def keyAvroVersions = avroVersions.last()
 def gradle5KotlinVersions =[]
 if (!JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_1_10)) {
